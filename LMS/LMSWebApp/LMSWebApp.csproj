@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-LMSWebApp-B835948A-764D-4EBB-9E59-2478E7524952</UserSecretsId>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\bower_components\**" />
+    <Content Remove="wwwroot\bower_components\**" />
+    <EmbeddedResource Remove="wwwroot\bower_components\**" />
+    <None Remove="wwwroot\bower_components\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20220320062038_BookTableMigration.cs" />
+    <Compile Remove="Data\Migrations\20220320062038_BookTableMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220320062337_BookTableMigration.cs" />
+    <Compile Remove="Data\Migrations\20220320062337_BookTableMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220320063555_BookCheckoutHistoryTableMigration.cs" />
+    <Compile Remove="Data\Migrations\20220320063555_BookCheckoutHistoryTableMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220320063823_BookCheckoutHistoryTableMigration.cs" />
+    <Compile Remove="Data\Migrations\20220320063823_BookCheckoutHistoryTableMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220322085259_LogMigration.cs" />
+    <Compile Remove="Data\Migrations\20220322085259_LogMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\adminlte.js" />
+    <Content Remove="wwwroot\js\adminlte.min.js" />
+    <Content Remove="wwwroot\js\app.js" />
+    <Content Remove="wwwroot\js\app.min.js" />
+    <Content Remove="wwwroot\js\demo.js" />
+    <Content Remove="wwwroot\js\pages\dashboard.js" />
+    <Content Remove="wwwroot\js\pages\dashboard2.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.21" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\adminlte.css.map" />
+    <None Include="wwwroot\css\adminlte.min.css.map" />
+    <None Include="wwwroot\js\adminlte.js" />
+    <None Include="wwwroot\js\adminlte.min.js" />
+    <None Include="wwwroot\js\app.js" />
+    <None Include="wwwroot\js\app.min.js" />
+    <None Include="wwwroot\js\demo.js" />
+    <None Include="wwwroot\js\pages\dashboard.js" />
+    <None Include="wwwroot\js\pages\dashboard2.js" />
+    <None Include="wwwroot\lib\bootstrap-daterangepicker\daterangepicker.js" />
+    <None Include="wwwroot\lib\bootstrap\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\datatables.net-bs\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\lib\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\lib\daterangepicker\daterangepicker.js" />
+    <None Include="wwwroot\lib\daterangepicker\moment.js" />
+    <None Include="wwwroot\lib\daterangepicker\moment.min.js" />
+    <None Include="wwwroot\lib\font-awesome\css\font-awesome.css.map" />
+    <None Include="wwwroot\lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\lib\input-mask\jquery.inputmask.date.extensions.js" />
+    <None Include="wwwroot\lib\input-mask\jquery.inputmask.extensions.js" />
+    <None Include="wwwroot\lib\input-mask\jquery.inputmask.js" />
+    <None Include="wwwroot\lib\input-mask\jquery.inputmask.numeric.extensions.js" />
+    <None Include="wwwroot\lib\input-mask\jquery.inputmask.phone.extensions.js" />
+    <None Include="wwwroot\lib\input-mask\jquery.inputmask.regex.extensions.js" />
+    <None Include="wwwroot\lib\Ionicons\fonts\ionicons.svg" />
+    <None Include="wwwroot\lib\moment\moment.js" />
+  </ItemGroup>
+
+</Project>

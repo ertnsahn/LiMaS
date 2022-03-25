@@ -1,0 +1,285 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+
+    var previousYearDate = DateTime.Now.AddDays(-30);
+}
+@section styles
+{
+    <link href="~/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Dashboard
+            <small>Version 1.0</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="ion ion-ios-book"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Books</span>
+                        <span class="info-box-number">@ViewBag.TotalBooks</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="ion ion-ios-book"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Checkouts</span>
+                        <span class="info-box-number">@ViewBag.TotalCheckoutBooks</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="ion ion-ios-book"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Due</span>
+                        <span class="info-box-number">@ViewBag.TotalLateBooks</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-dollar"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Penality</span>
+                        <span class="info-box-number">@ViewBag.TotalPenality</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Statistics</h3>
+                        <div class="box-tools pull-right">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="reservation">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-center">
+                                    <strong id="StatsDates">Statistics:@previousYearDate.ToString("D") - @DateTime.Now.ToString("D")</strong>
+                                </p>
+                                <div class="chart">
+                                    <!-- Sales Chart Canvas -->
+                                    <canvas id="salesChart" style="height:380px;"></canvas>
+                                </div>
+                                <!-- /.chart-responsive -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- ./box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- /.content-wrapper -->
+
+@section scripts{
+    <script src="~/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script>
+        $(document).ready(function () {
+            function getCheckInOutStats(start, end) {
+                $.ajax({
+                    url: "/Home/GetChartData?start=" + start +"&end=" + end,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (result) {
+                        var requestReceivedData = [];
+                        $.each(result.listCheckOutData,
+                            function (key, obj) {
+                                requestReceivedData.push(obj.dataCount);
+                            });
+
+                        var requestCompletedData = [];
+                        $.each(result.listCheckinData,
+                            function (key, obj) {
+                                requestCompletedData.push(obj.dataCount);
+                            });
+
+                        $("#StatsDates").text(result.statsDates);
+
+                        var areaChartData = {};
+                        if (requestReceivedData.length > 0 && requestCompletedData.length > 0) {
+                            areaChartData = {
+                                labels: result.monthNames,
+                                datasets: [
+                                    {
+                                        label: 'Check in',
+                                        fillColor: '#00a65a ',
+                                        strokeColor: '#00a65a',
+                                        pointColor: '#00a65a',
+                                        pointStrokeColor: '#00a65a',
+                                        pointHighlightFill: '#00a65a',
+                                        pointHighlightStroke: '#00a65a',
+                                        data: requestReceivedData
+                                    },
+                                    {
+                                        label: 'Check out',
+                                        fillColor: '#00c0ef ',
+                                        strokeColor: '#00c0ef',
+                                        pointColor: '#00c0ef',
+                                        pointStrokeColor: '#00c0ef',
+                                        pointHighlightFill: '#00c0ef',
+                                        pointHighlightStroke: '#00c0ef',
+                                        data: requestCompletedData
+                                    }
+                                ]
+                            }
+                        }
+                        else if (requestReceivedData.length > 0 && requestCompletedData.length <= 0) {
+                            areaChartData = {
+                                labels: result.monthNames,
+                                datasets: [
+                                    {
+                                        label: 'Check in ',
+                                        fillColor: '#00a65a ',
+                                        strokeColor: '#00a65a',
+                                        pointColor: '#00a65a',
+                                        pointStrokeColor: '#00a65a',
+                                        pointHighlightFill: '#00a65a',
+                                        pointHighlightStroke: '#00a65a',
+                                        data: requestReceivedData
+                                    }
+                                ]
+                            }
+                        }
+
+                        else if (requestReceivedData.length <= 0 && requestCompletedData.length > 0) {
+                            areaChartData = {
+                                labels: result.monthNames,
+                                datasets: [
+                                    {
+                                        label: 'Check out',
+                                        fillColor: '#00c0ef ',
+                                        strokeColor: '#00c0ef',
+                                        pointColor: '#00c0ef',
+                                        pointStrokeColor: '#00c0ef',
+                                        pointHighlightFill: '#00c0ef',
+                                        pointHighlightStroke: '#00c0ef',
+                                        data: requestCompletedData
+                                    }
+                                ]
+                            }
+                        }
+
+                        //-------------
+                        //- BAR CHART -
+                        //-------------
+                        var barChartCanvas = $('#salesChart').get(0).getContext('2d');
+                        var barChart = new Chart(barChartCanvas);
+                        var barChartData = areaChartData;
+
+                        var barChartOptions = {
+                            //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                            scaleBeginAtZero: true,
+                            //Boolean - Whether grid lines are shown across the chart
+                            scaleShowGridLines: true,
+                            //String - Colour of the grid lines
+                            scaleGridLineColor: 'rgba(0,0,0,.05)',
+                            //Number - Width of the grid lines
+                            scaleGridLineWidth: 1,
+                            //Boolean - Whether to show horizontal lines (except X axis)
+                            scaleShowHorizontalLines: true,
+                            //Boolean - Whether to show vertical lines (except Y axis)
+                            scaleShowVerticalLines: true,
+                            //Boolean - If there is a stroke on each bar
+                            barShowStroke: true,
+                            //Number - Pixel width of the bar stroke
+                            barStrokeWidth: 2,
+                            //Number - Spacing between each of the X value sets
+                            barValueSpacing: 5,
+                            //Number - Spacing between data sets within X values
+                            barDatasetSpacing: 1,
+                            //String - A legend template
+                            legendTemplate:
+                                '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+                            //Boolean - whether to make the chart responsive
+                            responsive: true,
+                            maintainAspectRatio: true
+                        }
+
+                        barChartOptions.datasetFill = false;
+                        barChart.Bar(barChartData, barChartOptions);
+                    },
+                    error: function (err) {
+                    }
+                });
+            }
+            $('#reservation').daterangepicker({
+                "startDate": "@previousYearDate.ToString("dd/MM/yyyy")",
+                "endDate": "@DateTime.Now.ToString("dd/MM/yyyy")"
+            }, function (start, end, label) {
+                start = start.format('DD/MM/YYYY');
+                end = end.format('DD/MM/YYYY');
+                getCheckInOutStats(start, end);
+            });
+            getCheckInOutStats("@previousYearDate.ToString("dd/MM/yyyy")","@DateTime.Now.ToString("dd/MM/yyyy")");
+        });
+    </script>
+}

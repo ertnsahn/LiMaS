@@ -1,0 +1,70 @@
+﻿@model LMSWebApp.Data.Book
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Books
+            <small>Create</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Books</a></li>
+            <li class="active">Create</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <form asp-action="Create">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="BookTitle" class="control-label"></label>
+                                        <input asp-for="BookTitle" class="form-control" />
+                                        <span asp-validation-for="BookTitle" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="ISBN" class="control-label"></label>
+                                        <input asp-for="ISBN" class="form-control" />
+                                        <span asp-validation-for="ISBN" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="PublishYear" class="control-label"></label>
+                                        <input asp-for="PublishYear" class="form-control" />
+                                        <span asp-validation-for="PublishYear" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CoverPrice" class="control-label"></label>
+                                        <input asp-for="CoverPrice" class="form-control" />
+                                        <span asp-validation-for="CoverPrice" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <a href="~/books" class="btn btn-danger">Cancel</a>
+                            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</div>

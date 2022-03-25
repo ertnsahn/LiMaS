@@ -1,0 +1,176 @@
+﻿@model LMSWebApp.Models.ViewModels.CheckInModel
+@using LMSWebApp.Enum
+@{
+    ViewData["Title"] = "Checkout Details";
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Books
+            <small>@ViewData["Title"]</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="~/books">Books</a></li>
+            <li class="active">@ViewData["Title"]</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">@ViewData["Title"]</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" method="post">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.PersonName">Person name</label>
+                                        <input type="text" disabled class="form-control" asp-for="@Model.PersonName" value="@Model.PersonName" placeholder="Enter Person name">
+                                        <span asp-validation-for="PersonName" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.MobileNumber">Mobile number</label>
+                                        <input type="text" disabled class="form-control" asp-for="@Model.MobileNumber" value="@Model.MobileNumber" placeholder="Enter Mobile number">
+                                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.NationalID">National ID</label>
+                                        <input type="text" disabled maxlength="11" class="form-control" asp-for="@Model.NationalID" value="@Model.NationalID" placeholder="Enter National ID">
+                                        <span asp-validation-for="NationalID" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.CheckoutDate">Checkout Date</label>
+                                        <input id="CheckoutDate" disabled type="date" class="form-control" asp-for="@Model.CheckoutDate" value="@Model.CheckoutDate" placeholder="Enter Checkout Date">
+                                        <span asp-validation-for="CheckoutDate" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.ReturnDate">Return Date</label>
+                                        <input id="ReturnDate" disabled type="date" class="form-control" asp-for="@Model.ReturnDate" value="@Model.ReturnDate" placeholder="Enter Return Date">
+                                        <span asp-validation-for="ReturnDate" class="text-danger"></span>
+
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.ActualReturnDate">Actual Return Date</label>
+                                        <input  type="date" disabled class="form-control" asp-for="@Model.ActualReturnDate" placeholder="Enter Actual Return Date">
+                                        <span asp-validation-for="ReturnDate" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                                    <input hidden asp-for="@Model.BookId" value="@Model.BookId" />
+                                    <input hidden asp-for="@Model.Id" value="@Model.Id" />
+                            </div>  
+                            <div class="row PenalityDiv hidden">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.Penality">Penality</label>
+                                        <input  type="number" min="0" class="form-control" asp-for="@Model.Penality" placeholder="Enter Penality">
+                                        <span asp-validation-for="Penality" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="@Model.Currency">Currency</label>
+                                        <select class="form-control" asp-for="@Model.Currency">
+                                            <option value="@CurrencyEnum.TRY">@CurrencyEnum.TRY.ToString()</option>
+                                            <option value="@CurrencyEnum.PKR">@CurrencyEnum.PKR.ToString()</option>
+                                            <option value="@CurrencyEnum.INR">@CurrencyEnum.INR.ToString()</option>
+                                            <option value="@CurrencyEnum.NGN">@CurrencyEnum.NGN.ToString()</option>
+                                            <option value="@CurrencyEnum.USD">@CurrencyEnum.USD.ToString()</option>
+                                            <option value="@CurrencyEnum.EURO">@CurrencyEnum.EURO.ToString()</option>
+                                        </select>
+                                        <span asp-validation-for="Currency" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <a href="~/books" class="btn btn-danger">Cancel</a>
+                            <a href="~/books/checkin/@Model.Id" class="btn btn-primary pull-right">Check in</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!--/.col (left) -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+@section scripts{
+    <script>
+
+        function setSecondDate() {
+            var days = 15;
+            var date = new Date(document.getElementById("CheckoutDate").value);
+            date.setDate(date.getDate() + parseInt(days));
+            document.getElementById("ReturnDate").valueAsDate = date;
+        }
+
+        $(document).ready(function () {
+
+            document.getElementById("CheckoutDate").valueAsDate = new Date();
+            setSecondDate();
+
+            $("#CheckoutDate").change(function () {
+                setSecondDate()
+            });
+
+            $("#ActualReturnDate").on("change", function () {
+                var val = $(this).val();
+                var returnDate = $("#ReturnDate").val();
+                if (val > returnDate) {
+
+                    var returnDate = moment($("#ReturnDate").val(), "YYYY-MM-DD");
+                    var actualReturnDate = moment(val, "YYYY-MM-DD");
+
+                    var diff = moment.duration(actualReturnDate.diff(returnDate)).asDays();
+                    var totalPenality = 5 * diff;
+                    $("#Penality").val(totalPenality);
+                    $(".PenalityDiv").removeClass("hidden");
+                } else {
+                    $(".PenalityDiv").addClass("hidden");
+                }
+            });
+        });
+
+    </script>
+}

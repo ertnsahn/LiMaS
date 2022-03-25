@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "History";
+}
+@section styles{
+    <link href="~/lib/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet" />
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            @ViewData["Title"]
+            <small>Management</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">@ViewData["Title"]</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">@ViewData["Title"]</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <input id="BookId" hidden value="@ViewBag.Id" />
+                        <table id="HistoryTable" class="table table-bordered table-striped">
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+@section Scripts{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var historyTable = "";
+            historyTable = $("#HistoryTable").DataTable({
+                "responsive": true,
+                "serverSide": true,
+                "processing": true,
+                "paging": true,
+                "ajax": {
+                    "url": "/Books/GetHistory",
+                    "type": "POST",
+                    "contentType": 'application/json',
+                    "data": function (d) {
+                        d.SearchTerm = $('.dataTables_filter input').val();
+                        d.Page = (historyTable === "" ? 0 : historyTable.page.info().page) + 1;
+                        d.RowsPerPage = historyTable === "" ? 10 : historyTable.page.info().length;
+                        d.SortByColumn = historyTable === "" ? 3 : historyTable.order()[0][0]+1;
+                        d.SortDir = historyTable === "" ? "ASC" : historyTable.order()[0][1].toUpperCase();
+                        d.BookId = $("#BookId").val();
+                        return JSON.stringify(d);
+                    },
+                },
+                "columns": [
+                    {
+                        "title": "Id", "data": "id",
+                        "visible": false
+                    },
+                    {
+                        "title": "Person Name", "data": "personName"
+                    },
+                    {
+                        "title": "National Id", "data": "nationalID"
+                    },
+                    {
+                        "title": "Mobile Number", "data": "mobileNumber"
+                    },
+                    {
+                        "title": "Checkout Date", "data": "checkoutDate",
+                        "render": function (data, type, row) {
+                            if (data === null || data === "" || typeof data === "undefined") {
+                                return '';
+                            } else {
+
+                                var mydate = new Date(data);
+                                return mydate.toDateString();
+                            }
+                        }
+                    },
+                    {
+                        "title": "Return Date", "data": "returnDate"
+                        ,
+                        "render": function (data, type, row) {
+                            if (data === null || data === "" || typeof data === "undefined") {
+                                return '';
+                            } else {
+
+                                var mydate = new Date(data);
+                                return mydate.toDateString();
+                            }
+                        }
+                    },
+                    {
+                        "title": "Actual Return Date", "data": "actualReturnDate",
+                        "render": function (data, type, row) {
+                            if (data === null || data === "" || typeof data === "undefined") {
+                                return '';
+                            } else {
+
+                                var mydate = new Date(data);
+                                return mydate.toDateString();
+                            }
+                        }
+                    }, 
+                    {
+                        "title": "Status", "data": "actualReturnDate",
+                        "render": function (data, type, row) {
+                            if (data === null || data === "" || typeof data === "undefined") {
+                                return '<span class="label label-success">Check Out</span>';
+                            } else {
+                                return '<span class="label label-info">Check In</span>';
+                            }
+                        }
+                    },
+
+               
+                ]
+            });
+
+        });
+    </script>
+}
